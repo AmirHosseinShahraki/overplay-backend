@@ -1,6 +1,27 @@
 ﻿services:
   api:
-    image: api
+    image: overplay-api
     build:
       context: .
       dockerfile: src/Api/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      DB_USER: "${DB_USER}"
+      DB_PASSWORD: "${DB_PASSWORD}"
+      ConnectionStrings__DefaultConnection: "Server=mssql;Database=Overplay;User Id=${DB_USER};Password=${DB_PASSWORD};TrustServerCertificate=True;"
+    depends_on:
+      - mssql
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "${SA_PASSWORD}"
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql_data:/var/opt/mssql
+
+volumes:
+  mssql_data:
