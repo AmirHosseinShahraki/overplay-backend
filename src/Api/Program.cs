@@ -1,3 +1,4 @@
+using Application;
 using dotenv.net;
 using Infrastructure;
 
@@ -11,7 +12,9 @@ if (builder.Environment.IsDevelopment())
 
 builder.Configuration.AddEnvironmentVariables();
 
+builder.Services.AddApplicationServices();
 builder.Services.ConfigureInfrastructureLayer(builder.Configuration);
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
