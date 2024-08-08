@@ -11,6 +11,8 @@
     <ItemGroup>
         <PackageReference Include="Ardalis.GuardClauses" Version="4.6.0" />
         <PackageReference Include="dotenv.net" Version="3.2.0" />
+        <PackageReference Include="Mapster" Version="7.4.0" />
+        <PackageReference Include="Mapster.DependencyInjection" Version="1.0.1" />
         <PackageReference Include="MediatR" Version="12.3.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.7" />
         <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="8.0.7" />
@@ -25,10 +27,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Endpoints\" />
     </ItemGroup>
 
 </Project>
