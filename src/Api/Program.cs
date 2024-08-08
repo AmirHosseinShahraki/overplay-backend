@@ -1,6 +1,8 @@
+using Api;
+using Api.Infrastructure;
 using Application;
-using dotenv.net;
 using Infrastructure;
+using dotenv.net;
 
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -13,17 +15,19 @@ if (builder.Environment.IsDevelopment())
 builder.Configuration.AddEnvironmentVariables();
 
 builder.Services.AddApplicationServices();
-builder.Services.ConfigureInfrastructureLayer(builder.Configuration);
+builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddApiServices();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 WebApplication app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.UseHealthChecks("/health");
+
+app.MapEndpoints();
 
 app.Run();
