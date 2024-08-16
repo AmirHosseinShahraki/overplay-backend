@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace Application.Songs.Commands.CreateSong;
+namespace Application.Songs.Commands.PublishSong;
 
 public class PublishSongCommand : IRequest<Guid>
 {
