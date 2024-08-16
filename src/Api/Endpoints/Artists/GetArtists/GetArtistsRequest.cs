@@ -13,7 +13,7 @@ public record GetArtistsRequest
 
     public int? Page
     {
-        get => _page != 0 ? _page : 1;
+        get => _page != 0 ? _page : null;
         set => _page = value ?? 1;
     }
 }
