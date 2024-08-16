@@ -7,8 +7,7 @@ public class PublishSongRequestValidator : AbstractValidator<PublishSongRequest>
     public PublishSongRequestValidator()
     {
         RuleFor(x => x.Title)
-            .MaximumLength(70)
-            .NotEmpty()
-            .NotNull();
+            .MaximumLength(100)
+            .NotEmpty();
     }
 }

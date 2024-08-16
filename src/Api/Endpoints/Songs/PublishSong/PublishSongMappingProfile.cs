@@ -1,4 +1,4 @@
-using Application.Songs.Commands.CreateSong;
+using Application.Songs.Commands.PublishSong;
 using Mapster;
 
 namespace Api.Endpoints.Songs.PublishSong;

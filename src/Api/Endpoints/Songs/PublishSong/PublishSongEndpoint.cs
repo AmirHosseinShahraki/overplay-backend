@@ -1,5 +1,5 @@
 using Api.Infrastructure;
-using Application.Songs.Commands.CreateSong;
+using Application.Songs.Commands.PublishSong;
 using MapsterMapper;
 using MediatR;
 
