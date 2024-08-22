@@ -32,7 +32,21 @@ public class SongConfiguration : IEntityTypeConfiguration<Song>
             .WithOne(st => st.Song)
             .HasForeignKey(st => st.SongId);
 
-        builder.HasMany(s => s.Artists)
-            .WithMany(a => a.Songs);
+        builder
+            .HasMany(s => s.Artists)
+            .WithMany(a => a.Songs)
+            .UsingEntity<SongArtist>(
+                j => j
+                    .HasOne(sa => sa.Artist)
+                    .WithMany(a => a.SongArtists)
+                    .HasForeignKey(sa => sa.ArtistId),
+                j => j
+                    .HasOne(sa => sa.Song)
+                    .WithMany(s => s.SongArtists)
+                    .HasForeignKey(sa => sa.SongId),
+                j =>
+                {
+                    j.HasKey(sa => new { sa.SongId, sa.ArtistId });
+                });
     }
 }

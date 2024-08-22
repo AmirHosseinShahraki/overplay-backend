@@ -2,6 +2,7 @@ using Application.Common.Interfaces;
 using Ardalis.GuardClauses;
 using Infrastructure.Data;
 using Infrastructure.Data.Interceptors;
+using Infrastructure.Storage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +31,11 @@ public static class DependencyInjection
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 
         services.AddSingleton(TimeProvider.System);
+
+
+        services.Configure<S3Configuration>(configuration.GetSection("S3Configuration"));
+
+        services.AddSingleton<IFileStorage, S3FileStorage>();
 
         return services;
     }
