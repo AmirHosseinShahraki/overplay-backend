@@ -1,4 +1,4 @@
-namespace Application.Tags.Queries.GetTagsWithPaginationQuery;
+namespace Application.Tags;
 
 public record TagBriefDto
 {

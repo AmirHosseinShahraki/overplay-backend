@@ -10,9 +10,5 @@ public class TagConfiguration : IEntityTypeConfiguration<Tag>
     {
         builder.HasKey(t => t.Id);
         builder.HasIndex(t => t.Title);
-
-        builder.HasMany(t => t.SongTags)
-            .WithOne(s => s.Tag)
-            .HasForeignKey(st => st.TagId);
     }
 }

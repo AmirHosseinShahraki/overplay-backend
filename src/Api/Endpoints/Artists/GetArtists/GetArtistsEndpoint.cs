@@ -1,4 +1,5 @@
 using Api.Infrastructure;
+using Application.Artists;
 using Application.Artists.Queries.GetArtistsWithPagination;
 using Application.Common.Models;
 using MapsterMapper;

@@ -1,5 +1,6 @@
 using Api.Infrastructure;
 using Application.Common.Models;
+using Application.Tags;
 using Application.Tags.Queries.GetTagsWithPaginationQuery;
 using MapsterMapper;
 using MediatR;
