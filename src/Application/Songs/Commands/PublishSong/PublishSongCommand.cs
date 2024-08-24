@@ -26,17 +26,14 @@ public class PublishSongCommandHandler(IFileStorage fileStorage, IApplicationDbC
         string audioFileUrl = await fileStorage.Upload(command.AudioFile, cancellationToken);
         string coverImageUrl = await fileStorage.Upload(command.CoverImageFile, cancellationToken);
 
-        CoverImageFile coverImage = new()
-        {
-            Url = coverImageUrl
-        };
-
         AudioFile audioFile = new()
         {
             Url = audioFileUrl,
             SongId = songId,
             Quality = AudioQuality.HighQuality
         };
+
+        List<AudioFile> audioFiles = [audioFile];
 
         List<SongArtist> songArtists = command.Artists
             .Select(artistId => new SongArtist { ArtistId = artistId, SongId = songId })
@@ -51,8 +48,8 @@ public class PublishSongCommandHandler(IFileStorage fileStorage, IApplicationDbC
             Id = songId,
             Title = command.Title,
             Lyrics = command.Lyrics,
-            CoverImage = coverImage,
-            Audios = new List<AudioFile> { audioFile },
+            CoverImageUrl = coverImageUrl,
+            Audios = audioFiles,
             SongArtists = songArtists,
             SongTags = songTags
         };

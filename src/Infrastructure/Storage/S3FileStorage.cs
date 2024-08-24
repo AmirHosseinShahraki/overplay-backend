@@ -1,6 +1,7 @@
 using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Microsoft.Extensions.Options;
 
@@ -41,6 +42,11 @@ public class S3FileStorage : IFileStorage
 
         PutObjectResponse response = await _client.PutObjectAsync(request, cancellationToken);
 
-        return $"{_configuration.Url}/{key}";
+        if (response is null)
+        {
+            throw new UploadFileFailedException();
+        }
+
+        return $"{_configuration.Url}/{_configuration.DefaultBucket}%2F{key}";
     }
 }
