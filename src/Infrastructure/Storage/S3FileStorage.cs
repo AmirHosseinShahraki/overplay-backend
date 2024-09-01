@@ -1,46 +1,37 @@
-using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
-using Application.Common.Exceptions;
-using Application.Common.Interfaces;
+using MapsterMapper;
 using Microsoft.Extensions.Options;
+using Application.Common.Exceptions;
+using Application.Common.Interfaces.FileStorage;
 
 namespace Infrastructure.Storage;
 
-public class S3FileStorage : IFileStorage
+public class S3FileStorage(
+    IOptions<S3Configuration> configuration,
+    AmazonS3Client client,
+    IMapper mapper)
+    : IFileStorage
 {
-    private readonly AmazonS3Client _client;
-    private readonly S3Configuration _configuration;
+    private readonly S3Configuration _configuration = configuration.Value;
 
-    public S3FileStorage(IOptions<S3Configuration> configuration)
-    {
-        _configuration = configuration.Value;
-
-        BasicAWSCredentials credentials = new(
-            _configuration.AccessKey,
-            _configuration.SecretKey
-        );
-
-        AmazonS3Config config = new()
-        {
-            ServiceURL = _configuration.Url
-        };
-
-        _client = new AmazonS3Client(credentials, config);
-    }
-
-    public async Task<string> Upload(Stream stream, CancellationToken cancellationToken)
+    public async Task<string> Upload(
+        Stream stream,
+        FileAccessControl fileAccessControl,
+        CancellationToken cancellationToken)
     {
         string key = Guid.NewGuid().ToString();
+        S3CannedACL acl = mapper.Map<S3CannedACL>(fileAccessControl);
 
         PutObjectRequest request = new()
         {
             BucketName = _configuration.DefaultBucket,
             Key = key,
-            InputStream = stream
+            InputStream = stream,
+            CannedACL = acl
         };
 
-        PutObjectResponse response = await _client.PutObjectAsync(request, cancellationToken);
+        PutObjectResponse response = await client.PutObjectAsync(request, cancellationToken);
 
         if (response is null)
         {

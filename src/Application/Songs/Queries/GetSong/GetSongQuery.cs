@@ -1,5 +1,4 @@
 using Application.Common.Interfaces;
-using Domain.Entities;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -13,9 +12,9 @@ public class GetSongQuery : IRequest<SongDto>
 
 public class GetSongQueryHandler(IApplicationDbContext dbContext) : IRequestHandler<GetSongQuery, SongDto>
 {
-    public async Task<SongDto> Handle(GetSongQuery query, CancellationToken cancellationToken)
+    public Task<SongDto> Handle(GetSongQuery query, CancellationToken cancellationToken)
     {
-        return await dbContext.Songs
+        return dbContext.Songs
             .Where(s => s.Id == query.Id)
             .Include(s => s.Audios)
             .ProjectToType<SongDto>()

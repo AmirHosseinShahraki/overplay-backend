@@ -9,5 +9,11 @@ public class PublishSongRequestValidator : AbstractValidator<PublishSongRequest>
         RuleFor(x => x.Title)
             .MaximumLength(100)
             .NotEmpty();
+
+        RuleFor(x => x.CoverImageFile)
+            .NotNull();
+
+        RuleFor(x => x.AudioFile)
+            .NotNull();
     }
 }

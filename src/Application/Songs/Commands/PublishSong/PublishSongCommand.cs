@@ -1,4 +1,5 @@
 using Application.Common.Interfaces;
+using Application.Common.Interfaces.FileStorage;
 using Domain.Entities;
 using Domain.ValueObjects;
 using MediatR;
@@ -23,8 +24,8 @@ public class PublishSongCommandHandler(IFileStorage fileStorage, IApplicationDbC
     {
         Guid songId = Guid.NewGuid();
 
-        string audioFileUrl = await fileStorage.Upload(command.AudioFile, cancellationToken);
-        string coverImageUrl = await fileStorage.Upload(command.CoverImageFile, cancellationToken);
+        string audioFileUrl = await fileStorage.Upload(command.AudioFile, FileAccessControl.Private, cancellationToken);
+        string coverImageUrl = await fileStorage.Upload(command.CoverImageFile, FileAccessControl.PublicRead, cancellationToken);
 
         AudioFile audioFile = new()
         {

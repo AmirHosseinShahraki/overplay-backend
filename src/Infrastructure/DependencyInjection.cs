@@ -32,10 +32,7 @@ public static class DependencyInjection
 
         services.AddSingleton(TimeProvider.System);
 
-
-        services.Configure<S3Configuration>(configuration.GetSection("S3Configuration"));
-
-        services.AddSingleton<IFileStorage, S3FileStorage>();
+        services.ConfigureS3(configuration);
 
         return services;
     }
