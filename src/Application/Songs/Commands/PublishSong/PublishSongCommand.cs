@@ -24,9 +24,16 @@ public class PublishSongCommandHandler(IFileStorage fileStorage, IApplicationDbC
     {
         Guid songId = Guid.NewGuid();
 
-        Guid audioFileKey = await fileStorage.Upload(command.AudioFile, FileAccessControl.Private, cancellationToken);
-        Guid coverImageFileKey =
-            await fileStorage.Upload(command.CoverImageFile, FileAccessControl.PublicRead, cancellationToken);
+        Task<Guid>[] uploadTasks =
+        [
+            fileStorage.Upload(command.AudioFile, FileAccessControl.Private, cancellationToken),
+            fileStorage.Upload(command.CoverImageFile, FileAccessControl.PublicRead, cancellationToken)
+        ];
+
+        Guid[] results = await Task.WhenAll(uploadTasks);
+
+        (Guid audioFileKey, Guid coverImageFileKey) = (results[0], results[1]);
+
 
         AudioFile audioFile = new()
         {
