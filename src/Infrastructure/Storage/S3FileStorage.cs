@@ -15,18 +15,19 @@ public class S3FileStorage(
 {
     private readonly S3Configuration _configuration = configuration.Value;
 
-    public async Task<string> Upload(
+    public async Task<Guid> Upload(
         Stream stream,
         FileAccessControl fileAccessControl,
         CancellationToken cancellationToken)
     {
-        string key = Guid.NewGuid().ToString();
+        Guid key = Guid.NewGuid();
+
         S3CannedACL acl = mapper.Map<S3CannedACL>(fileAccessControl);
 
         PutObjectRequest request = new()
         {
             BucketName = _configuration.DefaultBucket,
-            Key = key,
+            Key = key.ToString(),
             InputStream = stream,
             CannedACL = acl
         };
@@ -38,6 +39,6 @@ public class S3FileStorage(
             throw new UploadFileFailedException();
         }
 
-        return $"{_configuration.Url}/{_configuration.DefaultBucket}%2F{key}";
+        return key;
     }
 }

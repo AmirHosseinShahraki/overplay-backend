@@ -13,7 +13,7 @@ public record SongBriefDto
     public required string Title { get; init; }
 
     [JsonPropertyOrder(3)]
-    public required string CoverImageUrl { get; init; }
+    public required Guid CoverImageFileKey { get; init; }
 
     [JsonPropertyOrder(4)]
     public required ArtistBriefDto[] Artists { get; init; }

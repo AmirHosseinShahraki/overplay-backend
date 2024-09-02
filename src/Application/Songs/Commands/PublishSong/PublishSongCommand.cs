@@ -24,12 +24,13 @@ public class PublishSongCommandHandler(IFileStorage fileStorage, IApplicationDbC
     {
         Guid songId = Guid.NewGuid();
 
-        string audioFileUrl = await fileStorage.Upload(command.AudioFile, FileAccessControl.Private, cancellationToken);
-        string coverImageUrl = await fileStorage.Upload(command.CoverImageFile, FileAccessControl.PublicRead, cancellationToken);
+        Guid audioFileKey = await fileStorage.Upload(command.AudioFile, FileAccessControl.Private, cancellationToken);
+        Guid coverImageFileKey =
+            await fileStorage.Upload(command.CoverImageFile, FileAccessControl.PublicRead, cancellationToken);
 
         AudioFile audioFile = new()
         {
-            Url = audioFileUrl,
+            FileKey = audioFileKey,
             SongId = songId,
             Quality = AudioQuality.HighQuality
         };
@@ -49,7 +50,7 @@ public class PublishSongCommandHandler(IFileStorage fileStorage, IApplicationDbC
             Id = songId,
             Title = command.Title,
             Lyrics = command.Lyrics,
-            CoverImageUrl = coverImageUrl,
+            CoverImageFileKey = coverImageFileKey,
             Audios = audioFiles,
             SongArtists = songArtists,
             SongTags = songTags

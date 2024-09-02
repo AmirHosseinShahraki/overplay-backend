@@ -6,7 +6,7 @@ public class Song : BaseAuditableEntity<Guid>
 {
     public string Title { get; set; } = null!;
     public string? Lyrics { get; set; }
-    public string CoverImageUrl { get; set; } = null!;
+    public Guid CoverImageFileKey { get; set; }
     public virtual ICollection<Artist> Artists { get; set; } = [];
     public virtual ICollection<SongArtist> SongArtists { get; set; } = [];
     public virtual ICollection<AudioFile> Audios { get; set; } = [];

@@ -4,5 +4,5 @@ namespace Domain.Entities;
 
 public abstract class File : BaseEntity<Guid>
 {
-    public string Url { get; set; } = null!;
+    public Guid FileKey { get; set; }
 }
